@@ -39,10 +39,15 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 
  ## mockups :
-![image](https://github.com/Search-Internship/frontend/assets/114484969/824be08f-6f55-4220-8b70-c28ed1d275aa)
+![image](https://github.com/Search-Internship/frontend/assets/114484969/92673667-d38b-4dd2-9719-99b639036675)
+![image](https://github.com/Search-Internship/frontend/assets/114484969/cec40cf1-b607-4c73-baad-b646a962ca2d)
+![image](https://github.com/Search-Internship/frontend/assets/114484969/db08f4cb-6f51-4d58-a801-cff96a091d3c)
+![image](https://github.com/Search-Internship/frontend/assets/114484969/1fbb7b7f-0fc0-43e0-8a24-c2ba8ba96ce6)
+![image](https://github.com/Search-Internship/frontend/assets/114484969/3a4efc3e-fab7-4357-9209-c9c0bc300497)
 
-![image](https://github.com/Search-Internship/frontend/assets/114484969/626c5de4-0e4d-4608-a14a-3062d275f34e)
 
-![image](https://github.com/Search-Internship/frontend/assets/114484969/aabffa69-9ceb-46fc-bbcb-57e308ba0cac)
+
+
+
 
 
