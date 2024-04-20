@@ -21,7 +21,12 @@ export function HomePage() {
   const cvComponent = cv();
   const EmailComponent = Emails();
   const SettingsComponent = settings();
-
+  const handleLogout = () => {
+    // Clear all items from local storage
+    localStorage.clear();
+    //refresh the page
+    window.location.reload();
+  };
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -49,6 +54,13 @@ export function HomePage() {
   const stopPropagation = (e) => {
     e.stopPropagation();
   };
+  const getFullNameAndEmail = () => {
+    const formData = JSON.parse(localStorage.getItem("formData"));
+    const fullName = formData ? formData.fullName : "";
+    const sender_email = formData ? formData.sender_email : "";
+    return { fullName, sender_email };
+  };
+  const { fullName, sender_email } = getFullNameAndEmail();
 
   const handleStartSendingMails = async () => {
     const emailData = {
@@ -175,8 +187,8 @@ export function HomePage() {
                   width="40"
                 />
                 <div className="space-y-1 leading-none">
-                  <div className="font-semibold">Grace Smith</div>
-                  <div className="text-xs leading-none text-gray-500 dark:text-gray-400">grace@example.com</div>
+                  <div className="font-semibold">{fullName}</div>
+                  <div className="text-xs leading-none text-gray-500 dark:text-gray-400">{sender_email}</div>
                 </div>
               </div>
               <div>
@@ -184,16 +196,10 @@ export function HomePage() {
                   <div className="flex justify-center items-center">
                     <div className="mt-4 flex flex-col gap-4">
                       <div className="flex items-center gap-2">
-                        <FiUser className="w-6 h-6" />
-                        <span>Profile</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <FiSettings className="w-6 h-6" />
-                        <span>Settings</span>
-                      </div>
-                      <div className="flex items-center gap-2">
                         <FiLogOut className="w-6 h-6" />
-                        <span>Logout</span>
+                        <button onClick={handleLogout} className="font-medium">
+                Logout
+              </button>
                       </div>
                     </div>
                   </div>
