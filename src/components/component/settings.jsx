@@ -52,8 +52,9 @@ export function settings() {
           <Input id="linkedIn" placeholder="Enter your LinkedIn profile URL" type="url" />
         </div>
         <div className="flex justify-between items-center">
-          <p className="text-gray-500">Make sure to save your changes.</p>
+          <p className="text-gray-500">Make sure to save your changes...</p>
           <div className="flex gap-2">
+            <br></br>
             <Button className="bg-black hover:bg-gray-900 text-white" type="submit">
               Save Changes
             </Button>

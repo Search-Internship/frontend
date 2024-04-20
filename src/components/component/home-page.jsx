@@ -10,11 +10,14 @@ import { FiSettings, FiUpload, FiLogOut, FiUser, FiPackage, FiFlag } from "react
 import { cv } from "@/components/component/cv";
 import { useState } from "react";
 import {settings} from "@/components/component/settings";
+import {Emails} from "@/components/component/emails";
 
 export function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-
+  const [isemailOpen, setIsemailsOpen] = useState(false);
+  const cvComponent = cv();
+  const EmailComponent = Emails();
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -28,6 +31,12 @@ export function HomePage() {
   };
   const closeSettings = () => {
     setIsSettingsOpen(false);
+  };
+  const emailsOpen = () => {
+    setIsemailsOpen(true);
+  };
+  const closeEmails = () => {
+    setIsemailsOpen(false);
   };
 
   const stopPropagation = (e) => {
@@ -47,9 +56,9 @@ export function HomePage() {
             <li>
               <div className="flex items-center gap-2">
                 <FiPackage className="w-6 h-6" />
-                <Link href="#" className="font-medium">
+                <button onClick={emailsOpen} className="font-medium">
                   Emails
-                </Link>
+                </button>
               </div>
             </li>
             <li>
@@ -138,27 +147,19 @@ export function HomePage() {
               <Textarea className="min-h-[200px]" id="message" placeholder="Enter your message" />
             </div>
           </div>
+          <div className="flex justify-center">
+              <Button >Start Sending Mails</Button>
+            </div>
+
         </div>
       </main>
+      
       {isModalOpen && (
   <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50" onClick={closeModal}>
-    <div className="bg-white p-0 rounded-md max-w-md w-full h-3/4" onClick={stopPropagation}>
+    <div className="bg-white p-0 rounded-md  w-1/2 h-1/2" onClick={stopPropagation}>
       <div className="flex flex-col justify-center h-full">
-        {/* <div className="flex justify-end">
-          <button onClick={closeModal} className="text-gray-500 hover:text-gray-700">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div> */}
         <div className="mb-8 flex justify-center">
-          {cv()}
+          {cvComponent}
         </div>
       </div>
     </div>
@@ -168,25 +169,25 @@ export function HomePage() {
       {isSettingsOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50" onClick={closeSettings}>
           <div className="bg-white p-0 rounded-md max-w-md w-full" onClick={stopPropagation}>
-            {/* <div className="flex justify-end">
-              <button onClick={closeSettings} className="text-gray-500 hover:text-gray-700">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div> */}
             <div className="mb-8 h-1/2">
               {settings()}
             </div>
           </div>
         </div>
       )}
+
+      {isemailOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50" onClick={closeEmails}>
+          <div className="bg-white p-0 rounded-md w-1/2 h-1/2" onClick={stopPropagation}>
+          <div className="flex flex-col justify-center h-full">
+            <div className="mb-8 flex justify-center">
+              {EmailComponent}
+            </div>
+          </div>
+        </div>
+      </div>
+      )}
+      
     </div>
   );
 }
