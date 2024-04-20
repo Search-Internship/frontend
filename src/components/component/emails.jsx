@@ -64,10 +64,8 @@ export function Emails() {
     }
 
     if (txtFile) {
-      const jsonContent = {
-        txtFile: txtFile
-      };
-      console.log("Text file saved:", jsonContent);
+      // Save the text file in local storage with the name "emails"
+      localStorage.setItem("emails", txtFile);
       setShowPopup(true); // Show popup after saving the file
     }
   };

@@ -64,10 +64,8 @@ export function cv() {
     }
 
     if (pdfFile) {
-      const jsonContent = {
-        pdfFile: pdfFile
-      };
-      console.log("PDF saved:", jsonContent);
+      // Save the PDF file in local storage with the name "resume"
+      localStorage.setItem("resume", pdfFile);
       setShowPopup(true); // Show popup after saving the file
     }
   };
