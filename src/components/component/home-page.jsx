@@ -141,7 +141,7 @@ export function HomePage() {
               <div className="flex items-center gap-2">
                 <FiPackage className="w-6 h-6" />
                 <button onClick={emailsOpen} className="font-medium">
-                  Emails
+                  Upload Emails
                 </button>
               </div>
             </li>
