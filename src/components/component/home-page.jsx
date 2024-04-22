@@ -1,10 +1,13 @@
 // Import React and other required modules
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Link from "next/link";
 import { convertToRaw } from 'draft-js'; 
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { draftToMarkdown } from 'markdown-draft-js';
+import "froala-editor/css/froala_editor.pkgd.min.css";
+import FroalaEditor from "react-froala-wysiwyg";
 import {
   PopoverTrigger,
   PopoverContent,
@@ -32,9 +35,7 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 export function HomePage() {
   // State variables
   const [subject, setSubject] = useState("");
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
+  const [editorContent, setEditorContent] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isemailOpen, setIsemailsOpen] = useState(false);
@@ -42,6 +43,9 @@ export function HomePage() {
   const cvComponent = cv();
   const EmailComponent = Emails();
   const SettingsComponent = settings();
+
+    // Ref for Froala Editor
+    const editorRef = useRef(null);
 
   // Function to handle user logout
   const handleLogout = () => {
@@ -95,12 +99,14 @@ export function HomePage() {
 
   // Function to handle sending emails
   const handleStartSendingMails = async () => {
+
+    const content = editorRef.current?.editor.html.get();
+  console.log("Content:", content);
     // Prepare email data
     const emailData = {
       email_subject: subject,
-      email_body: JSON.stringify(convertToRaw(editorState.getCurrentContent())), // Convert to raw Draft.js content
-      
-    };
+      email_body: content,
+    };
     // Save email data to localStorage
     localStorage.setItem("emailData", JSON.stringify(emailData));
     
@@ -284,27 +290,14 @@ export function HomePage() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="message">Message</Label>
-              <div
-                className="border border-gray-300 rounded "
-                style={{ padding: "15px" }}
-              >
-                <Editor
-                  editorState={editorState}
-                  wrapperClassName="wrapper-class"
-                  editorClassName="editor-class"
-                  toolbarClassName="toolbar-class"
-                  onEditorStateChange={setEditorState}
-                  placeholder="Enter your message"
-                  toolbar={{
-                    options: [
-                      "inline",
-                      "list",
-                      "textAlign",
-                      "history",
-                    ],
-                  }}
-                />
-              </div>
+              <FroalaEditor
+               model={editorContent}
+               ref={editorRef}
+               tag="textarea"
+               config={{
+                placeholderText: "Enter your message",
+              }}
+            />
             </div>
           </div>
           <div className="flex justify-center">
