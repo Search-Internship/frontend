@@ -1,5 +1,5 @@
-// Import React and other required modules
 "use client";
+
 import React, { useState, useRef } from "react";
 import Link from "next/link";
 import { convertToRaw } from 'draft-js'; 
@@ -30,7 +30,6 @@ import { settings } from "@/components/component/settings";
 import { Emails } from "@/components/component/emails";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
-
 // Define the HomePage functional component
 export function HomePage() {
   // State variables
@@ -44,8 +43,8 @@ export function HomePage() {
   const EmailComponent = Emails();
   const SettingsComponent = settings();
 
-    // Ref for Froala Editor
-    const editorRef = useRef(null);
+  // Ref for Froala Editor
+  const editorRef = useRef(null);
 
   // Function to handle user logout
   const handleLogout = () => {
@@ -99,9 +98,8 @@ export function HomePage() {
 
   // Function to handle sending emails
   const handleStartSendingMails = async () => {
-
     const content = editorRef.current?.editor.html.get();
-  console.log("Content:", content);
+    console.log("Content:", content);
     // Prepare email data
     const emailData = {
       email_subject: subject,
@@ -270,53 +268,47 @@ export function HomePage() {
           </PopoverContent>
         </Popover>
       </header>
-      <main className="flex-1 p-4 md:p-6">
-        <div className="mx-auto max-w-3xl space-y-4">
-          <div className="space-y-2">
-            <h1 className="text-3xl font-bold">Compose new email</h1>
-            <p className="text-gray-500 dark:text-gray-400">
-              Fill in the details below.
-            </p>
-          </div>
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="subject">Subject</Label>
-              <Input
-                id="subject"
-                placeholder="Enter subject"
-                onChange={(e) => setSubject(e.target.value)}
-                value={subject}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="message">Message</Label>
-              <FroalaEditor
-               model={editorContent}
-               ref={editorRef}
-               tag="textarea"
-               config={{
-                placeholderText: "Enter your message",
-              }}
-            />
-            </div>
-          </div>
-          <div className="flex justify-center">
-            <Button onClick={handleStartSendingMails}>
-              Start Sending Mails
-            </Button>
-          </div>
-        </div>
-      </main>
+      <main className="flex-1 p-4 md:p-6 relative z-0"> {/* Ajoutez relative z-0 pour le maintenir en-dessous des modales */}
+  <div className="mx-auto max-w-3xl space-y-4">
+    <div className="space-y-2">
+      <h1 className="text-3xl font-bold">Compose new email</h1>
+      <p className="text-gray-500 dark:text-gray-400">
+        Fill in the details below.
+      </p>
+    </div>
+    <div className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="subject">Subject</Label>
+        <Input
+          id="subject"
+          placeholder="Enter subject"
+          onChange={(e) => setSubject(e.target.value)}
+          value={subject}
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="message">Message</Label>
+        <FroalaEditor
+          model={editorContent}
+          ref={editorRef}
+          tag="textarea"
+          config={{
+            placeholderText: "Enter your message",
+          }}
+        />
+      </div>
+    </div>
+    <div className="flex justify-center">
+      <Button onClick={handleStartSendingMails} className=" bg-black text-white">
+        Start Sending Mails
+      </Button>
+    </div>
+  </div>
+</main>
 
       {isModalOpen && (
-        <div
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
-          onClick={closeModal}
-        >
-          <div
-            className="bg-white p-0 rounded-md w-1/2 h-1/2"
-            onClick={stopPropagation}
-          >
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50" onClick={closeModal}>
+          <div className="bg-white p-0 rounded-md w-1/2 h-1/2 relative z-10" onClick={stopPropagation}>
             <div className="flex flex-col justify-center h-full">
               <div className="mb-8 flex justify-center">{cvComponent}</div>
             </div>
@@ -325,28 +317,16 @@ export function HomePage() {
       )}
 
       {isSettingsOpen && (
-        <div
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
-          onClick={closeSettings}
-        >
-          <div
-            className="bg-white p-0 rounded-md max-w-md w-full"
-            onClick={stopPropagation}
-          >
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50" onClick={closeSettings}>
+          <div className="bg-white p-0 rounded-md max-w-md w-full relative z-10" onClick={stopPropagation}>
             <div className="mb-8 h-1/2">{SettingsComponent}</div>
           </div>
         </div>
       )}
 
       {isemailOpen && (
-        <div
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
-          onClick={closeEmails}
-        >
-          <div
-            className="bg-white p-0 rounded-md w-1/2 h-1/2"
-            onClick={stopPropagation}
-          >
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50" onClick={closeEmails}>
+          <div className="bg-white p-0 rounded-md w-1/2 h-1/2 relative z-10" onClick={stopPropagation}>
             <div className="flex flex-col justify-center h-full">
               <div className="mb-8 flex justify-center">{EmailComponent}</div>
             </div>
