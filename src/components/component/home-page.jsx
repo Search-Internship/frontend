@@ -88,13 +88,13 @@ export function HomePage() {
   };
 
   // Function to get full name and email from local storage
-  const getFullNameAndEmail = () => {
-    const formData = JSON.parse(localStorage.getItem("formData"));
-    const fullName = formData ? formData.fullName : "";
-    const sender_email = formData ? formData.sender_email : "";
-    return { fullName, sender_email };
-  };
-  const { fullName, sender_email } = getFullNameAndEmail();
+  // const getFullNameAndEmail = () => {
+  //   const formData = JSON.parse(localStorage.getItem("formData"));
+  //   const fullName = formData ? formData.fullName : "";
+  //   const sender_email = formData ? formData.sender_email : "";
+  //   return { fullName, sender_email };
+  // };
+  // const { fullName, sender_email } = getFullNameAndEmail();
 
   // Function to handle sending emails
   const handleStartSendingMails = async () => {
@@ -126,12 +126,14 @@ export function HomePage() {
     });
     const resumeFile = new File([resumeBlob], "resume.pdf");
     // Other data
-    const formData = JSON.parse(localStorage.getItem("formData"));
-    const sender_email = formData ? formData.sender_email : "";
-    const sender_password = formData ? formData.sender_password : "";
+    // const formData = JSON.parse(localStorage.getItem("formData"));
+    // const sender_email = formData ? formData.sender_email : "";
+    // const sender_password = formData ? formData.sender_password : "";
     const email_subject = emailData.email_subject;
     const email_body = emailData.email_body;
-    const file_separator = "\n"; // Assuming you want to hardcode the separator
+    const file_separator = ";"; // Assuming you want to hardcode the separator
+    const accessToken = localStorage.getItem("token");
+    // console.log 
 
     // Wait for the files to be created before logging their types
     await Promise.all([
@@ -144,15 +146,20 @@ export function HomePage() {
     MyformData.append("emails", emailsFile);
     MyformData.append("email_body", email_body);
     MyformData.append("resume", resumeFile);
-    MyformData.append("sender_email", sender_email);
-    MyformData.append("sender_password", sender_password);
+    // MyformData.append("sender_email", sender_email);
+    // MyformData.append("sender_password", sender_password);
     MyformData.append("email_subject", email_subject);
     MyformData.append("file_separator", file_separator);
-    console.log(email_body);
-
+    MyformData.append("access_token", accessToken);
+    console.log("emailsFile type:", emailsFile.type);
+    console.log("resumeFile type:", resumeFile.type);
+    console.log("email_subject:", email_subject);
+    console.log("email_body:", email_body);
+    console.log("file_separator:", file_separator);
+    console.log("access_token:", accessToken);
     try {
       // Send POST request to the API endpoint
-      const response = await fetch("http://127.0.0.1:8000/send/", {
+      const response = await fetch("http://127.0.0.1:8000/api/email/send-internship", {
         method: "POST",
         body: MyformData,
       });
@@ -244,9 +251,9 @@ export function HomePage() {
                   width="40"
                 />
                 <div className="space-y-1 leading-none">
-                  <div className="font-semibold">{fullName}</div>
+                  <div className="font-semibold">fullname</div>
                   <div className="text-xs leading-none text-gray-500 dark:text-gray-400">
-                    {sender_email}
+                    Email
                   </div>
                 </div>
               </div>
