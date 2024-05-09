@@ -7,6 +7,8 @@ export function Verification() {
   const [verificationCode, setVerificationCode] = useState('');
   const [isCodeVerified, setIsCodeVerified] = useState(false);
   const [isSendingCode, setIsSendingCode] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const userEmail = localStorage.getItem('user_email');
   const [mycode, setMycode] = useState('');
 
@@ -26,13 +28,19 @@ export function Verification() {
         console.log('Verification code sent:', data.code);
         setMycode(data.code);
         setIsSendingCode(false); // Disable the button after code is sent
+        setSuccess('Verification code sent successfully.');
+        setError('');
       } else {
         console.error('Failed to send verification code:', response.statusText);
         setIsSendingCode(false);
+        setError('Failed to send verification code: ' + response.statusText);
+        setSuccess('');
       }
     } catch (error) {
       console.error('Error sending verification code:', error);
       setIsSendingCode(false);
+      setError('Error sending verification code: ' + error.message);
+      setSuccess('');
     }
   };
 
@@ -42,6 +50,11 @@ export function Verification() {
       console.log("Verification code is correct");
       window.location.href = "/home";
       setIsCodeVerified(true);
+      setSuccess('Verification successful!');
+      setError('');
+    } else {
+      setError('Invalid verification code.');
+      setSuccess('');
     }
   };
 
@@ -77,6 +90,8 @@ export function Verification() {
               }}
             />
           </div>
+          {error && <p className="text-red-500">{error}</p>}
+          {success && <p className="text-green-500">{success}</p>}
           <Button className="w-full bg-black" type="submit" disabled={isSendingCode}>
             Verify
           </Button>

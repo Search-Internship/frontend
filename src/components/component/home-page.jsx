@@ -25,7 +25,7 @@ import {
   FiPackage,
   FiFlag,
 } from "react-icons/fi";
-import { cv } from "@/components/component/cv";
+import { CV } from "@/components/component/cv";
 import { settings } from "@/components/component/settings";
 import { Emails } from "@/components/component/emails";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
@@ -39,7 +39,7 @@ export function HomePage() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isemailOpen, setIsemailsOpen] = useState(false);
   // Components
-  const cvComponent = cv();
+  const cvComponent = CV();
   const EmailComponent = Emails();
   const SettingsComponent = settings();
 
@@ -95,6 +95,10 @@ export function HomePage() {
   //   return { fullName, sender_email };
   // };
   // const { fullName, sender_email } = getFullNameAndEmail();
+
+
+  const generateMessageWithAI = async () => {
+  }
 
   // Function to handle sending emails
   const handleStartSendingMails = async () => {
@@ -198,34 +202,35 @@ export function HomePage() {
           <span className="sr-only">Easy Internship</span>
           Easy Internship
         </Link>
-        <nav className="flex-1">
-          <ul className="flex items-center justify-center space-x-4">
-            <li>
-              <div className="flex items-center gap-2">
-                <FiPackage className="w-6 h-6" />
-                <button onClick={emailsOpen} className="font-medium">
-                  Upload Emails
-                </button>
-              </div>
-            </li>
-            <li>
-              <div className="flex items-center gap-2">
-                <FiUpload className="w-6 h-6" />
-                <button onClick={openModal} className="font-medium">
-                  Upload CV
-                </button>
-              </div>
-            </li>
-            <li>
-              <div className="flex items-center gap-2">
-                <FiSettings className="w-6 h-6" />
-                <button onClick={openSettings} className="font-medium">
-                  Settings
-                </button>
-              </div>
-            </li>
-          </ul>
-        </nav>
+        <nav className="flex-1 flex justify-center items-center">
+  <ul className="flex items-center justify-center space-x-4">
+    <li>
+      <div className="flex items-center gap-2">
+        <FiPackage className="w-6 h-6" />
+        <button onClick={emailsOpen} className="font-medium">
+          Upload Emails
+        </button>
+      </div>
+    </li>
+    <li>
+      <div className="flex items-center gap-2">
+        <FiUpload className="w-6 h-6" />
+        <button onClick={openModal} className="font-medium">
+          Upload CV
+        </button>
+      </div>
+    </li>
+    {/* <li>
+      <div className="flex items-center gap-2">
+        <FiSettings className="w-6 h-6" />
+        <button onClick={openSettings} className="font-medium">
+          Settings
+        </button>
+      </div>
+    </li> */}
+  </ul>
+</nav>
+
         <Popover>
           <PopoverTrigger asChild>
             <Button
@@ -309,6 +314,13 @@ export function HomePage() {
       </div>
     </div>
     <div className="flex justify-center">
+    <Button onClick={generateMessageWithAI} className="font-medium bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md">
+  Generate Message with AI
+</Button>
+
+        </div>
+    <div className="flex justify-center">
+    
       <Button onClick={handleStartSendingMails} className=" bg-black text-white">
         Start Sending Mails
       </Button>
@@ -326,13 +338,13 @@ export function HomePage() {
         </div>
       )}
 
-      {isSettingsOpen && (
+      {/* {isSettingsOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50" onClick={closeSettings}>
           <div className="bg-white p-0 rounded-md max-w-md w-full relative z-10" onClick={stopPropagation}>
             <div className="mb-8 h-1/2">{SettingsComponent}</div>
           </div>
         </div>
-      )}
+      )} */}
 
       {isemailOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50" onClick={closeEmails}>

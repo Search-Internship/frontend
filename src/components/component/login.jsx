@@ -4,12 +4,13 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import React from "react";
 
 export function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -28,20 +29,19 @@ export function Login() {
         body: formData,
       });
       if (response.ok) {
-        console.log("Login successful");
+        setSuccess("Login successful");
+        setError("");
         const responseData = await response.json();
         const accessToken = responseData.access_token;
         localStorage.setItem("token", accessToken);
         window.location.href = "/home";
-        // console.log(await response.json());
-
-        // localStorage.setItem("token", response.access_token);
-        // window.location.href = "/home";
       } else {
-        // Handle error
+        setError("Invalid email or password");
+        setSuccess("");
       }
     } catch (error) {
-      console.error("Error:", error);
+      setError("Error logging in: " + error.message);
+      setSuccess("");
     }
   };
 
@@ -134,6 +134,8 @@ export function Login() {
               </button>
             </div>
           </div>
+          {error && <p className="text-red-500">{error}</p>}
+          {success && <p className="text-green-500">{success}</p>}
           <Button className="w-full mx-auto bg-black text-white" type="submit">
             Login
           </Button>

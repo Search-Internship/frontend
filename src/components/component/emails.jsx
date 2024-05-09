@@ -70,6 +70,14 @@ export function Emails() {
     }
   };
 
+  const handleFileClick = () => {
+    document.getElementById("fileInput").click();
+  };
+
+  const handleMiddleClick = () => {
+    handleFileClick();
+  };
+
   return (
     <div
       className="flex items-center justify-center h-screen"
@@ -80,31 +88,30 @@ export function Emails() {
         <div className="w-full max-w-md">
           <div className="text-center">
             <div className="font-bold">Upload Your Emails</div>
-            <div>Drag and drop your emails and click the upload button to submit.</div>
+            <div>Drag and drop your emails and click the upload button to submit (Emails separed by ';')</div>
           </div>
           <div>
             <br />
           </div>
-          <div>
-            <div
-              className="flex h-16 w-100 items-center justify-center rounded-md border-2 border-dashed border-gray-300 px-6 py-10 transition-colors hover:border-gray-400 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2"
-              onDrop={handleFileDrop}
-              onDragOver={(e) => e.preventDefault()}
-            >
-              {isUploaded ? (
-                <div className="text-center">
-                  <FiCheckCircle className="mx-auto h-15 w-15 text-green-500" />
-                  <p className="mt-2 text-sm font-medium text-green-500">File Uploaded</p>
-                </div>
-              ) : (
-                <div className="text-center">
-                  <FiUpload className="mx-auto h-15 w-15 text-gray-400" />
-                  <p className="mt-2 text-sm font-medium text-gray-900">Drag and drop your emails .txt</p>
-                  <p className="mt-1 text-sm text-gray-500">or click to upload</p>
-                  <input type="file" onChange={handleFileUpload} className="hidden" accept=".txt" />
-                </div>
-              )}
-            </div>
+          <div
+            className="flex h-16 w-100 items-center justify-center rounded-md border-2 border-dashed border-gray-300 px-6 py-10 transition-colors hover:border-gray-400 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2"
+            onClick={handleMiddleClick}
+            onDrop={handleFileDrop}
+            onDragOver={(e) => e.preventDefault()}
+          >
+            {isUploaded ? (
+              <div className="text-center">
+                <FiCheckCircle className="mx-auto h-15 w-15 text-green-500" />
+                <p className="mt-2 text-sm font-medium text-green-500">File Uploaded</p>
+              </div>
+            ) : (
+              <div className="text-center">
+                <FiUpload className="mx-auto h-15 w-15 text-gray-400" />
+                <p className="mt-2 text-sm font-medium text-gray-900">Drag and drop your emails .txt</p>
+                <p className="mt-1 text-sm text-gray-500">or click to upload</p>
+                <input type="file" id="fileInput" onClick={handleFileClick} onChange={handleFileUpload} className="hidden" accept=".txt" />
+              </div>
+            )}
           </div>
           <div>
             <div>
@@ -134,3 +141,4 @@ export function Emails() {
     </div>
   );
 }
+

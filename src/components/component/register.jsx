@@ -1,6 +1,5 @@
-
-  "use client";
-  import { useState } from 'react';
+"use client";
+import React, { useState } from 'react';
 
 export function Register() {
   const [formData, setFormData] = useState({
@@ -13,6 +12,8 @@ export function Register() {
   });
 
   const [showPassword, setShowPassword] = useState({ password: false, emailPassword: false });
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const togglePasswordVisibility = (field) => {
     setShowPassword({ ...showPassword, [field]: !showPassword[field] });
@@ -41,13 +42,21 @@ export function Register() {
         // Handle success
         console.log('User created successfully');
         localStorage.setItem('user_email', formData.email);
-        window.location.href = '/verification';
+        setSuccess('User created successfully. Redirecting to verification page...');
+        setError('');
+        setTimeout(() => {
+          window.location.href = '/verification';
+        }, 2000);
       } else {
         // Handle error
         console.error('Failed to create user');
+        setError('Failed to create user. Please try again.');
+        setSuccess('');
       }
     } catch (error) {
       console.error('Error:', error);
+      setError('Error: ' + error.message);
+      setSuccess('');
     }
   };
 
@@ -296,7 +305,8 @@ export function Register() {
                   </div>
                 </div>
               </div>
-
+              {error && <p className="text-red-500">{error}</p>}
+              {success && <p className="text-green-500">{success}</p>}
               <div>
                 <button
                   className="w-full flex justify-center py-2 px-4 border border-gray-200 border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-950 dark:bg-black dark:hover:bg-gray-900 dark:border-gray-800"

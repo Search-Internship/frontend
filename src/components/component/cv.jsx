@@ -22,7 +22,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { FiUpload, FiCheckCircle } from "react-icons/fi";
 
-export function cv() {
+export function CV() {
   const [pdfFile, setPdfFile] = useState(null);
   const [isUploaded, setIsUploaded] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -70,6 +70,14 @@ export function cv() {
     }
   };
 
+  const handleFileClick = () => {
+    document.getElementById("fileInput").click();
+  };
+
+  const handleMiddleClick = () => {
+    handleFileClick();
+  };
+
   return (
     <div
       className="flex items-center justify-center h-screen"
@@ -85,26 +93,25 @@ export function cv() {
           <div>
             <br />
           </div>
-          <div>
-            <div
-              className="flex h-16 w-100 items-center justify-center rounded-md border-2 border-dashed border-gray-300 px-6 py-10 transition-colors hover:border-gray-400 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2"
-              onDrop={handleFileDrop}
-              onDragOver={(e) => e.preventDefault()}
-            >
-              {isUploaded ? (
-                <div className="text-center">
-                  <FiCheckCircle className="mx-auto h-15 w-15 text-green-500" />
-                  <p className="mt-2 text-sm font-medium text-green-500">CV Uploaded</p>
-                </div>
-              ) : (
-                <div className="text-center">
-                  <FiUpload className="mx-auto h-15 w-15 text-gray-400" />
-                  <p className="mt-2 text-sm font-medium text-gray-900">Drag and drop your resume .pdf</p>
-                  <p className="mt-1 text-sm text-gray-500">or click to upload</p>
-                  <input type="file" onChange={handleFileUpload} className="hidden" accept=".pdf" />
-                </div>
-              )}
-            </div>
+          <div
+            className="flex h-16 w-100 items-center justify-center rounded-md border-2 border-dashed border-gray-300 px-6 py-10 transition-colors hover:border-gray-400 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2"
+            onClick={handleMiddleClick}
+            onDrop={handleFileDrop}
+            onDragOver={(e) => e.preventDefault()}
+          >
+            {isUploaded ? (
+              <div className="text-center">
+                <FiCheckCircle className="mx-auto h-15 w-15 text-green-500" />
+                <p className="mt-2 text-sm font-medium text-green-500">CV Uploaded</p>
+              </div>
+            ) : (
+              <div className="text-center">
+                <FiUpload className="mx-auto h-15 w-15 text-gray-400" />
+                <p className="mt-2 text-sm font-medium text-gray-900">Drag and drop your resume .pdf</p>
+                <p className="mt-1 text-sm text-gray-500">or click to upload</p>
+                <input type="file" id="fileInput" onClick={handleFileClick} onChange={handleFileUpload} className="hidden" accept=".pdf" />
+              </div>
+            )}
           </div>
           <div>
             <div>
