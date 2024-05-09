@@ -1,19 +1,22 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 export function Register() {
   const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    linkedin_link: '',
-    password: '',
-    phone_number: '',
-    email_password: ''
+    username: "",
+    email: "",
+    linkedin_link: "",
+    password: "",
+    phone_number: "",
+    email_password: "",
   });
 
-  const [showPassword, setShowPassword] = useState({ password: false, emailPassword: false });
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [showPassword, setShowPassword] = useState({
+    password: false,
+    emailPassword: false,
+  });
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const togglePasswordVisibility = (field) => {
     setShowPassword({ ...showPassword, [field]: !showPassword[field] });
@@ -33,35 +36,37 @@ export function Register() {
     }
 
     try {
-      const response = await fetch('http://localhost:8000/api/users', {
-        method: 'POST',
-        body: form
+      const response = await fetch("http://localhost:8000/api/users", {
+        method: "POST",
+        body: form,
       });
 
       if (response.ok) {
         // Handle success
-        console.log('User created successfully');
-        localStorage.setItem('user_email', formData.email);
-        setSuccess('User created successfully. Redirecting to verification page...');
-        setError('');
+        console.log("User created successfully");
+        localStorage.setItem("user_email", formData.email);
+        setSuccess(
+          "User created successfully. Redirecting to verification page..."
+        );
+        setError("");
         setTimeout(() => {
-          window.location.href = '/verification';
+          window.location.href = "/verification";
         }, 2000);
       } else {
         // Handle error
-        console.error('Failed to create user');
-        setError('Failed to create user. Please try again.');
-        setSuccess('');
+        console.error("Failed to create user");
+        setError("Failed to create user. Please try again.");
+        setSuccess("");
       }
     } catch (error) {
-      console.error('Error:', error);
-      setError('Error: ' + error.message);
-      setSuccess('');
+      console.error("Error:", error);
+      setError("Error: " + error.message);
+      setSuccess("");
     }
   };
 
   return (
-    <div className="w-full h-full h-screen max-w-md mx-auto py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-white">
+    <div className="w-full h-full h-screen max-w-md mx-auto py-10 px-4 sm:px-6 lg:px-8 bg-white dark:bg-white">
       <div className="space-y-6">
         <div className="text-center">
           <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-900">
@@ -177,12 +182,12 @@ export function Register() {
                       name="password"
                       placeholder="********"
                       required
-                      type={showPassword.password ? 'text' : 'password'}
+                      type={showPassword.password ? "text" : "password"}
                       value={formData.password}
                       onChange={handleChange}
                     />
                     <div
-                      onClick={() => togglePasswordVisibility('password')}
+                      onClick={() => togglePasswordVisibility("password")}
                       className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-auto cursor-pointer"
                     >
                       {showPassword.password ? (
@@ -252,12 +257,12 @@ export function Register() {
                       name="email_password"
                       placeholder="********"
                       required
-                      type={showPassword.emailPassword ? 'text' : 'password'}
+                      type={showPassword.emailPassword ? "text" : "password"}
                       value={formData.email_password}
                       onChange={handleChange}
                     />
                     <div
-                      onClick={() => togglePasswordVisibility('emailPassword')}
+                      onClick={() => togglePasswordVisibility("emailPassword")}
                       className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-auto cursor-pointer"
                     >
                       {showPassword.emailPassword ? (
@@ -316,6 +321,16 @@ export function Register() {
                 </button>
               </div>
             </form>
+            <div className="text-center mt-4">
+              <ul>
+                <li
+                  className="text-gray-700 dark:text-gray-700 cursor-pointer"
+                  onClick={() => (window.location.href = "/login")}
+                >
+                  Already have an account? Login here
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>

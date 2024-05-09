@@ -71,7 +71,7 @@ export function Login() {
               <Label htmlFor="password">Password</Label>
               <Link
                 className="text-sm font-small text-gray-600 hover:underline dark:text-gray-400"
-                href="#"
+                href="/forgotpassword"
               >
                 Forgot Password?
               </Link>
@@ -140,6 +140,13 @@ export function Login() {
             Login
           </Button>
         </form>
+        <div className="text-center mt-4">
+    <ul>
+      <li className="text-gray-700 dark:text-gray-700 cursor-pointer" onClick={() => window.location.href = "/register"}>
+      Don't have an account yet? Register here
+      </li>
+    </ul>
+  </div>
       </div>
     </div>
   );
