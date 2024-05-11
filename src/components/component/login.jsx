@@ -4,6 +4,9 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 export function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -11,6 +14,7 @@ export function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -18,6 +22,7 @@ export function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const formData = new FormData();
     formData.append("email", email);
@@ -43,10 +48,19 @@ export function Login() {
       setError("Error logging in: " + error.message);
       setSuccess("");
     }
+    finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="flex h-screen w-full items-center justify-center bg-white">
+      {loading ? (
+        <div className="text-center">
+          <FontAwesomeIcon icon={faSpinner} spin className="text-4xl text-gray-700 dark:text-gray-700" />
+          <p className="mt-4 text-gray-700 dark:text-gray-700">Login...</p>
+        </div>
+      ) : (
       <div className="w-full max-w-md space-y-6 rounded-lg bg-white p-6 shadow-lg ">
         <div className="space-y-2 text-center">
           <h1 className="text-3xl font-bold">Login</h1>
@@ -148,6 +162,7 @@ export function Login() {
     </ul>
   </div>
       </div>
+      )}
     </div>
   );
 }

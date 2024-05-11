@@ -4,6 +4,8 @@
     import { Input } from '@/components/ui/input';
     import { Button } from '@/components/ui/button';
     import OtpInput from 'react-otp-input';
+    import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
     
     export default function ForgotPassword() {
       const [email, setEmail] = useState('');
@@ -13,6 +15,7 @@
       const [error, setError] = useState('');
       const [success, setSuccess] = useState('');
       const [allFieldsFilled, setAllFieldsFilled] = useState(false);
+      const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     // Vérifier si tous les champs sont remplis
@@ -24,6 +27,7 @@
   }, [email, verificationCode, newPassword]);
 
       const handleSendVerificationCode = async () => {
+        setLoading(true);
         try {
           const formData1 = new FormData();
           formData1.append('email', email);
@@ -32,6 +36,9 @@
             method: 'POST',
             body: formData1,
           });
+           const response = await emailExistResponse.json();
+           console.log(response);
+           localStorage.setItem('access_token', response.access_token);
     
           if (!emailExistResponse.ok) {
             setError('Email does not exist.');
@@ -61,6 +68,8 @@
         } catch (error) {
           setError('Error sending verification code: ' + error.message);
           setSuccess('');
+        } finally{
+            setLoading(false);
         }
       };
     
@@ -74,8 +83,9 @@
             const formData = new FormData();
             formData.append('email', email);
             formData.append('new_password', newPassword);
-    
-            const resetPasswordResponse = await fetch(`http://localhost:8000/api/users/forgot-password`, {
+            formData.append('access_token', localStorage.getItem('access_token'));
+
+            const resetPasswordResponse = await fetch(`http://localhost:8000/api/users/change-password`, {
               method: 'PUT',
               body: formData,
             });
@@ -83,6 +93,7 @@
             if (resetPasswordResponse.ok) {
               setSuccess('Password reset successfully.');
               setError('');
+              localStorage.removeItem('access_token');
               window.location.href = '/login';
             } else {
               setError('Failed to reset password: ' + resetPasswordResponse.statusText);
@@ -97,6 +108,12 @@
     
       return (
         <div className="flex h-screen items-center justify-center bg-white">
+            {loading ? (
+        <div className="text-center">
+          <FontAwesomeIcon icon={faSpinner} spin className="text-4xl text-gray-700 dark:text-gray-700" />
+          <p className="mt-4 text-gray-700 dark:text-gray-700">Sending verification code...</p>
+        </div>
+      ) : (
           <div className="w-full max-w-md space-y-6 rounded-lg bg-white p-6 shadow-lg">
             <div className="space-y-2 text-center">
               <h1 className="text-3xl font-bold">Forgot Password</h1>
@@ -167,6 +184,7 @@
           </Button>
             </form>
           </div>
+      )}
         </div>
       );
     }

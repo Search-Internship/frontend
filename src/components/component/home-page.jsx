@@ -30,6 +30,7 @@ import { settings } from "@/components/component/settings";
 import { Emails } from "@/components/component/emails";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
+
 // Define the HomePage functional component
 export function HomePage() {
   // State variables
@@ -38,6 +39,8 @@ export function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isemailOpen, setIsemailsOpen] = useState(false);
+  const [language, setLanguage] = useState("english"); // Ajoutez un état pour gérer la langue sélectionnée
+
   // Components
   const cvComponent = CV();
   const EmailComponent = Emails();
@@ -49,7 +52,7 @@ export function HomePage() {
   // Function to handle user logout
   const handleLogout = () => {
     localStorage.clear(); // Clear all items from local storage
-    window.location.reload(); // Refresh the page
+    window.location.href = "/landing"; // Redirect to the login page
   };
 
   // Function to open modal for uploading CV
@@ -86,6 +89,9 @@ export function HomePage() {
   const stopPropagation = (e) => {
     e.stopPropagation();
   };
+  const handleLanguageChange = (e) => {
+    setLanguage(e.target.value); // Mettre à jour l'état de la langue lorsque l'utilisateur change la sélection
+  };
 
   // Function to get full name and email from local storage
   // const getFullNameAndEmail = () => {
@@ -98,7 +104,49 @@ export function HomePage() {
 
 
   const generateMessageWithAI = async () => {
-  }
+    const resumeBase64 = localStorage.getItem("resume");
+    const resumeBytes = atob(resumeBase64);
+    const resumeUint8Array = new Uint8Array(resumeBytes.length);
+    for (let i = 0; i < resumeBytes.length; ++i) {
+      resumeUint8Array[i] = resumeBytes.charCodeAt(i);
+    }
+    const resumeBlob = new Blob([resumeUint8Array], {
+      type: "application/pdf",
+    });
+    const resumeFile = new File([resumeBlob], "resume.pdf");
+    const email_subject = subject;
+  
+    const formData = new FormData();
+    formData.append("resume", resumeFile);
+    formData.append("email_subject", email_subject);
+    formData.append("language", language);
+  
+    console.log("resumeFile type:", resumeFile.name);
+    console.log("email_subject:", email_subject);
+    console.log("language:", language);
+  
+    try {
+      const response = await fetch("http://localhost:8000/api/chat/generated-email-body", {
+        method: "POST",
+        body: formData,
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Failed to generate message with AI: ${response.statusText}`);
+      }
+  
+      const responseBody = await response.json();
+      const emailBody = responseBody.email_body;
+      // Process the Markdown text as needed
+      console.log("Generated Markdown text:", emailBody);
+      // For example, you can set the editor content state with the generated Markdown text
+      setEditorContent(emailBody);
+    } catch (error) {
+      console.error("Error generating message with AI:", error);
+      // Handle error
+    }
+  };
+  
 
   // Function to handle sending emails
   const handleStartSendingMails = async () => {
@@ -192,7 +240,7 @@ export function HomePage() {
 
   // Return JSX for the homepage component
   return (
-    <div className="flex flex-col w-screen h-screen bg-white">
+    <div className="flex flex-col w-screen bg-white">
       <header className="flex h-20 items-center justify-center px-4 border-b md:px-6">
         <Link
           href="#"
@@ -259,9 +307,9 @@ export function HomePage() {
                   width="40"
                 />
                 <div className="space-y-1 leading-none">
-                  <div className="font-semibold">fullname</div>
+                  <div className="font-semibold">User</div>
                   <div className="text-xs leading-none text-gray-500 dark:text-gray-400">
-                    Email
+                    User@easyInternship.com
                   </div>
                 </div>
               </div>
@@ -313,6 +361,18 @@ export function HomePage() {
         />
       </div>
     </div>
+    <div className="space-y-2">
+            <Label htmlFor="language">Language</Label>
+            <select
+              id="language"
+              onChange={handleLanguageChange}
+              value={language}
+              className="w-full px-3 py-2 border rounded-md"
+            >
+              <option value="english">English</option>
+              <option value="french">French</option>
+            </select>
+          </div>
     <div className="flex justify-center">
     <Button onClick={generateMessageWithAI} className="font-medium bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md">
   Generate Message with AI
@@ -357,4 +417,4 @@ export function HomePage() {
       )}
     </div>
   );
-}
+  }

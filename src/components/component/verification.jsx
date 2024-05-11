@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import OtpInput from 'react-otp-input';
 import { Button } from '@/components/ui/button';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export function Verification() {
   const [verificationCode, setVerificationCode] = useState('');
@@ -11,9 +13,11 @@ export function Verification() {
   const [success, setSuccess] = useState('');
   const userEmail = localStorage.getItem('user_email');
   const [mycode, setMycode] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSendVerificationCode = async () => {
     setIsSendingCode(true);
+    setLoading(true);
     try {
       const formData = new FormData();
       formData.append('to', userEmail);
@@ -42,10 +46,14 @@ export function Verification() {
       setError('Error sending verification code: ' + error.message);
       setSuccess('');
     }
+    finally {
+      setLoading(false);
+    }
   };
 
   const handleVerificationSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
     if (verificationCode === mycode) {
       console.log("Verification code is correct");
       window.location.href = "/home";
@@ -56,10 +64,18 @@ export function Verification() {
       setError('Invalid verification code.');
       setSuccess('');
     }
+    setLoading(false);
+    
   };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-white px-4 py-12 dark:bg-white-950">
+      {loading ? (
+        <div className="text-center">
+          <FontAwesomeIcon icon={faSpinner} spin className="text-4xl text-gray-700 dark:text-gray-700" />
+          <p className="mt-4 text-gray-700 dark:text-gray-700">Verification...</p>
+        </div>
+      ) : (
       <div className="w-full max-w-md space-y-8">
         <div className="text-center">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-50">Verify Your Email</h2>
@@ -107,6 +123,7 @@ export function Verification() {
           </div>
         )}
       </div>
+    )}
     </div>
   );
 }
